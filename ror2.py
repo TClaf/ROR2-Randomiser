@@ -2,19 +2,20 @@
 Generate a random loadout for a run of Risk of Rain 2
 """
 import sys
+import argparse
+
 import numpy as np
 
-#For allowing character to be used as an argument on the command line
-try:
-    CHOSEN_SURVIVOR = sys.argv[1].lower()
-    SURVIVOR_IS_CHOSEN = True
-except IndexError:
-    SURVIVOR_IS_CHOSEN = False
+parser = argparse.ArgumentParser()
+parser.add_argument("-f", "-randomise_finale", action = "store_true")
+parser.add_argument("-s", "-survivor", type = str, action = "store")
 
+print(vars(parser.parse_args()))
 #Constants
+CHOSEN_SURVIVOR = vars(parser.parse_args())["s"]
 RANDOMISE_SURVIVOR_SKILLS = True
-RANDOMISE_FINALE = False
-SUVIVOR_LIST: list = [
+RANDOMISE_FINALE = vars(parser.parse_args())["f"]
+SURVIVOR_LIST: list = [
 "commando",
 "huntress",
 "bandit",
@@ -34,13 +35,13 @@ SUVIVOR_LIST: list = [
 "operator",
 "drifter"
 ]
-HIGH_NUM: int = len(SUVIVOR_LIST) - 1
+HIGH_NUM: int = len(SURVIVOR_LIST) - 1
 
 #Variables
 rng = np.random.default_rng()
 
 #Functions
-def pick_skills(index: int) -> None:
+def pick_skills(index: int, txtfl) -> None:
     """For picking a random set of skills & a skin for a chosen survivor"""
 
     #Skill numbers for each character for each skill type
@@ -65,7 +66,7 @@ def pick_skills(index: int) -> None:
         skin_list
         ]
 
-    print("Your skill build will be:")
+    txtfl.write("Your skill build will be:\n")
 
     for cur_list in list_of_lists:
 
@@ -76,29 +77,32 @@ def pick_skills(index: int) -> None:
 
         chosen_skill:int = rng.integers(1, selected_character_slice, endpoint= True)
         if cur_list == skin_list:
-            print(f"The chosen skin is {chosen_skill}")
+            txtfl.write(f"The chosen skin is {chosen_skill}\n")
         else:
-            print(chosen_skill)
+            txtfl.write(f"{chosen_skill}\n")
 
-def pick_finale() -> None:
+def pick_finale(txtfl) -> None:
     """For chosing a finale for the run"""
 
     finale_list: list = ["annihalate", "moon", "void", "seekers", "alloyed"]
     finale_index = rng.integers(0, len(finale_list))
 
     chosen_finale = finale_list[finale_index]
-    print(f"You will try for the {chosen_finale} ending")
+    txtfl.write(f"You will try for the {chosen_finale} ending\n")
 
-if SURVIVOR_IS_CHOSEN:
-    survivor_index: int = SUVIVOR_LIST.index(CHOSEN_SURVIVOR)
+if CHOSEN_SURVIVOR:
+    SURVIVOR_INDEX: int = SURVIVOR_LIST.index(CHOSEN_SURVIVOR)
 else:
-    survivor_index: int = rng.integers(0, HIGH_NUM, endpoint= True)
+    SURVIVOR_INDEX: int = rng.integers(0, HIGH_NUM, endpoint= True)
 
-print(f"You will be playing {SUVIVOR_LIST[survivor_index]}")
+WRITE_FILE = "./ror2.txt"
 
-if RANDOMISE_SURVIVOR_SKILLS:
-    pick_skills(survivor_index)
-if RANDOMISE_FINALE:
-    pick_finale()
+with open(WRITE_FILE, "w", encoding = "utf-8") as file:
+    file.write(f"You will be playing {SURVIVOR_LIST[SURVIVOR_INDEX]} \n")
+
+    if RANDOMISE_SURVIVOR_SKILLS:
+        pick_skills(SURVIVOR_INDEX, file)
+    if RANDOMISE_FINALE:
+        pick_finale(file)
 
 #EOC
