@@ -28,14 +28,6 @@ Also generates a random skin to use.
 
 
 
-###### **IMPORTANT**:
-
-Virtual environment must be activated to run the script at the moment
-
-Use command: path\\to\\folder\\venv\\Scripts\\activate
-
-&nbsp;	
-
 ###### **FLAGS**
 
 The command line flags can be used to specify conditions:
