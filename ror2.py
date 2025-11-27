@@ -1,20 +1,19 @@
 """
 Generate a random loadout for a run of Risk of Rain 2
 """
-import sys
 import argparse
 
 import numpy as np
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-f", "-randomise_finale", action = "store_true")
-parser.add_argument("-s", "-survivor", type = str, action = "store")
+parser.add_argument("-randomise_finale", "-f", action = "store_true")
+parser.add_argument("-survivor", "-s", type = str, action = "store")
 
 print(vars(parser.parse_args()))
 #Constants
-CHOSEN_SURVIVOR = vars(parser.parse_args())["s"]
+CHOSEN_SURVIVOR = vars(parser.parse_args())["survivor"]
 RANDOMISE_SURVIVOR_SKILLS = True
-RANDOMISE_FINALE = vars(parser.parse_args())["f"]
+RANDOMISE_FINALE = vars(parser.parse_args())["randomise_finale"]
 SURVIVOR_LIST: list = [
 "commando",
 "huntress",
@@ -65,7 +64,7 @@ def pick_skills(index: int, txtfl) -> None:
         other2_list,
         skin_list
         ]
-
+    
     txtfl.write("Your skill build will be:\n")
 
     for cur_list in list_of_lists:
@@ -105,4 +104,4 @@ with open(WRITE_FILE, "w", encoding = "utf-8") as file:
     if RANDOMISE_FINALE:
         pick_finale(file)
 
-#EOC
+#EOD

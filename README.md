@@ -26,7 +26,10 @@ Also generates a random skin to use.
 
 ============================================
 
-
+###### **INSTALLATION**
+Dependencies are located in 'requirements.txt'
+Using pip install -r requirements.txt will install libraries automatically
+	Should only be numpy
 
 ###### **FLAGS**
 
