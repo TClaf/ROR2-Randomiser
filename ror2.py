@@ -9,7 +9,6 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-randomise_finale", "-f", action = "store_true")
 parser.add_argument("-survivor", "-s", type = str, action = "store")
 
-print(vars(parser.parse_args()))
 #Constants
 CHOSEN_SURVIVOR = vars(parser.parse_args())["survivor"]
 RANDOMISE_SURVIVOR_SKILLS = True
