@@ -1,15 +1,22 @@
 """
 Generate a random loadout for a run of Risk of Rain 2
 """
-import argparse
 
-import numpy as np
+#!TODO! Make final .txt file look cleaner
+#!TODO! Add CMD arg to stop random skill generation
+#!TODO! Pull skin randomiser out of skill randomiser function
 
-parser = argparse.ArgumentParser()
+from argparse import ArgumentParser
+from numpy import random
+
+#cmd line arguments
+parser = ArgumentParser()
 parser.add_argument("-randomise_finale", "-f", action = "store_true")
 parser.add_argument("-survivor", "-s", type = str, action = "store")
 
 #Constants
+WRITE_FILE = "./ror2.txt"
+
 CHOSEN_SURVIVOR = vars(parser.parse_args())["survivor"]
 RANDOMISE_SURVIVOR_SKILLS = True
 RANDOMISE_FINALE = vars(parser.parse_args())["randomise_finale"]
@@ -36,7 +43,7 @@ SURVIVOR_LIST: list = [
 HIGH_NUM: int = len(SURVIVOR_LIST) - 1
 
 #Variables
-rng = np.random.default_rng()
+rng = random.default_rng()
 
 #Functions
 def pick_skills(index: int, txtfl) -> None:
@@ -88,12 +95,12 @@ def pick_finale(txtfl) -> None:
     chosen_finale = finale_list[finale_index]
     txtfl.write(f"You will try for the {chosen_finale} ending\n")
 
+#Set or generate a list index based on whether survivor has been chosen
 if CHOSEN_SURVIVOR:
     SURVIVOR_INDEX: int = SURVIVOR_LIST.index(CHOSEN_SURVIVOR)
 else:
-    SURVIVOR_INDEX: int = rng.integers(0, HIGH_NUM, endpoint= True)
+    SURVIVOR_INDEX: int = rng.integers(0, HIGH_NUM, endpoint= True) #endpoint makes function inclusive of high num
 
-WRITE_FILE = "./ror2.txt"
 
 with open(WRITE_FILE, "w", encoding = "utf-8") as file:
     file.write(f"You will be playing {SURVIVOR_LIST[SURVIVOR_INDEX]} \n")
